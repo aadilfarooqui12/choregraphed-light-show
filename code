@@ -1,0 +1,128 @@
+//HAPPY BIRTHDAY
+//link: https://www.youtube.com/watch?v=7vQsBI6C8Qk
+
+int leds[] = { 2, 3, 4, 5, 6, 7 };
+int syl = 0;
+char start;
+const int del = (15625 / 21);
+
+void setup() {
+  Serial.begin(9600);
+  for (int i = 0; i < 6; i++) {
+    pinMode(leds[i], OUTPUT);
+  }
+  randomSeed(analogRead(0));
+}
+
+void repeat() {
+  //first 2 have to be faster
+  for (int i = 0; i < 6; i++) {
+    if (i == 0 || i == 1) {
+      digitalWrite(leds[i], HIGH);
+      delay(del - 100);
+    } else {
+      digitalWrite(leds[i], HIGH);
+      delay(del);
+    }
+  }
+}
+
+void special() {
+  for (int i = 0; i < 5; i++) {
+    if (i == 0 || i == 1) {
+      digitalWrite(leds[i], HIGH);
+      delay(del - 100);
+    } else {
+      digitalWrite(leds[i], HIGH);
+      delay(del);
+    }
+  }
+}
+
+void clear(bool cond) {
+  for (int i = 0; i < 6; i++) {
+    digitalWrite(leds[i], LOW);
+  }
+  if (cond == true) {
+    delay(del);
+  }
+}
+
+void loop() {
+  //The primary function of this choice is to change the number of
+  //times the an LED blinks in the 3rd line of the song
+  while (start != 'C' && start != 'P') {
+    /*choosing custom will allow the user to provide the number
+    of syllables for whoever's birthday it is
+    allowing people to actually sing to the song in sync
+    preset (2 syllables) is for the video provided*/
+    Serial.println("custom or preset, C or P: ");
+    delay(1000);
+    start = Serial.read();
+  }
+
+  if (start == 'C') {
+    while (syl == 0 || syl == -1) {
+      Serial.print("How many syllables are in your name? ");
+      delay(3000);
+      syl = Serial.read();
+    }
+
+    Serial.print("I received: ");
+    syl -= 48;
+    Serial.println(syl);
+    Serial.println("Start the song in ");
+    for (int i = 3; i > 0; i--) {
+      delay(750);
+      Serial.print(i);
+      if (i != 1) {
+        delay(250);
+        Serial.print(", ");
+      }
+    }
+
+    repeat();
+    clear(true);
+    repeat();
+    clear(true);
+    special();
+    clear(false);
+
+    for (int i = 0; i < syl; i++) {
+      int led = random(0, 6);
+      digitalWrite(leds[led], HIGH);
+      delay(del);
+      digitalWrite(leds[led], LOW);
+    }
+
+    clear(true);
+    repeat();
+  } else if (start == 'P') {
+    repeat();
+    clear(true);
+    repeat();
+    clear(true);
+    special();
+    clear(false);
+
+    for (int i = 0; i < 2; i++) {
+      int led = random(0, 6);
+      digitalWrite(leds[led], HIGH);
+      delay(del);
+      digitalWrite(leds[led], LOW);
+    }
+
+    clear(true);
+    repeat();
+  }
+  while (bool s = true) {
+    for (int i = 0; i < 6; i++) {
+      digitalWrite(leds[i], HIGH);
+    }
+    int l = random(0, 6);
+    int j = random(0, 6);
+    digitalWrite(leds[l], LOW);
+    digitalWrite(leds[j], LOW);
+    delay(random(100, 200));
+  }
+}
