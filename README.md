@@ -1,3 +1,5 @@
+# Happy Birthday Choreographed Light Show
+
 Choreographed light show program. Syncs to the "Happy Birthday" song. 
 Hardware setup is provided here: 
 
